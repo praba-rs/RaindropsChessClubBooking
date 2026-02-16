@@ -1,0 +1,67 @@
+.fieldlinebreak {
+  height: 10px;
+}
+.namelinebreak {
+  height: 5px;
+}
+
+input,label {  font-size: 1.2vw;
+  color:aliceblue;
+}
+
+span {  font-size: 1vw;
+}
+
+input {
+  color:rgb(36, 37, 37);
+}
+
+
+h1 { 
+  font-size: 2.6vw;
+}
+h2 { 
+  font-size: 1.6vw;
+}
+
+.labelleftmargin {
+  display: inline-block;
+  width: 160px;
+  text-align: right;
+}
+.labelinfo {
+  display: inline-block;
+  width: 700px;
+  text-align: left;
+  font-style: italic;
+  color: rgb(115, 214, 115);
+}
+
+.textleftmargin {
+  margin-left: 300px;
+  position: absolute; 
+}
+
+.buttonleftmargin {
+  display: inline-block;
+  margin-left: 160px;
+  width: 200px;
+  text-align: center;
+}
+
+.dataentry{
+     width:80%;
+     padding-left: 10%;
+}
+
+.chessinfo{
+  font-size: 1.2em;
+  color: yellow;
+}
+
+body {
+  background-color: #18192d;
+}
+.blueheading {
+  color: blue;
+}
