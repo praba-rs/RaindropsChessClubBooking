@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username=='chessreport' && $password =='report90')
     {
         $_SESSION['username'] = $username;
-        header("Location: index.php");
+        header("Location: list.php");
         exit;
     }
     else {

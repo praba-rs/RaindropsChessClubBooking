@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($child_name) && !empty($dob) && !empty($parent_name) && !empty($phone) && !empty($address)) {
 
-        $stmt = $conn->prepare("INSERT INTO child_registration (child_name, dob, parent_name, phone, address) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO raindrops_child_registration (child_name, dob, parent_name, phone, address) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $child_name, $dob, $parent_name, $phone, $address);
 
         if ($stmt->execute()) {
@@ -85,7 +85,7 @@ $conn->close();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">Address - station name is ok</label>
                             <textarea name="address" class="form-control" rows="3" required></textarea>
                         </div>
 

@@ -1,145 +1,124 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | Raindrops Chess Club</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<?php
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-$ini = parse_ini_file('app.ini');
-$fare = $ini['fare'];
-$starttime = $ini['start_time'];
-$maxcount = $ini['max_count'];
-$closed = $ini['closed'];
-
-if ($closed === "1")
-{
-    header('Location: closed.php');
-    exit;
-    
-}
-
-include 'db.php';
-
-
-session_start();
-$_SESSION['save'] = true;
-
-date_default_timezone_set("Asia/Tokyo");
-$currtime = date("YmdHis"); 
-
-$starttime = str_replace(' ', '', $starttime);
-
- if ((int)$currtime < (int)$starttime)
- {
-    header('Location: wait.php');
-    exit;
- }
- 
- 
- //waitlist automation
- $sqlout = $conn->query("SELECT count(*) FROM `raindropsbooking` WHERE cancelled = 0 and waitlist = 0");
-$row = mysqli_fetch_row($sqlout);
-$totalcount = $row[0] ;
-
-$showwait = ($totalcount>=$maxcount)?1:0;
-$conn->close();
-?>
-<html>
-    <head>
-        <link rel="stylesheet" href="chess.css">        
-        <title>Chess Club (Raindrops)</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-
-    </head>
-    <body>
-        <br>
-        <div class="container-fluid bg-dark"><br>
-            <div class="dataentry">
-            <h1 class="text-primary">Chess Club (Raindrops)</h1>
-            <h2 class="text-primary" >Please enter the details</h2>
-            <hr class="text-light">
-            <?php
-                if ($showwait===1)
-                {
-                echo '<h3><span style="border: 1px solid black; padding: 10px;background-color: yellow;">We have reached the maximum limit. We are accepting entries for Waitlist. 
-                Waitlist will be confirmed against cancellations.<br> </span></h3>';
-                }
-            ?>
-                <form action="process_reservation.php" method="post">
-                    <label for="childname"  class="labelleftmargin">Full name</label>
-                    <input type="text" id="childname" name="childname" minlength="3" maxlength="45" class="ss" required >
-                    <label class="labelinfo">Enter the name of the child </label>
-                    <div class="fieldlinebreak"><br></div>
-
-                    <label for="gender"  class="labelleftmargin">Gender</label>
-                    <input name="gender" type="radio" id="gender" value="M" checked=checked"/> <label>Male</label>
-                    <input name="gender" type="radio" id="gender" value="F" />  <label>Female</label>
-                    <label class="labelinfo"></label>
-                    <div class="fieldlinebreak"><br></div>
-
-                    <label for="dateofbirth"  class="labelleftmargin">Date of Birth</label>
-                    <input type="date" id="dateofbirth" name="dateofbirth" required >
-                    <label class="labelinfo"></label>
-                    <div class="fieldlinebreak"><br></div>
-
-                    <br>
-                    <label for="parentname"  class="labelleftmargin">Parent name</label>
-                    <input type="text" id="parentname" name="parentname" minlength="3" maxlength="45" required >
-                    <label class="labelinfo">Enter the name of Parent</label>
-                    <div class="fieldlinebreak"><br></div>
-
-                    <label for="email" class="labelleftmargin">Email</label>
-                    <input type="email" id="email" name="email" minlength="10" maxlength="100" required>
-                    <label class="labelinfo">Enter an valid email of parent.</label>
-                    <div class="fieldlinebreak"><br></div>
-                    
-                    <label for="email" class="labelleftmargin">Confirm Email</label>
-                    <input type="email" id="emailconfirm" name="emailconfirm" minlength="10" maxlength="100" onpaste="return false;" required>
-                    <div class="fieldlinebreak"><br></div>
-                    
-                    <label for="phone" class="labelleftmargin">Phone number</label>
-                    <input type="text" id="phone" name="phone" required maxlength="20">
-                    <label class="labelinfo">Phone number of parent.</label>
-                    <div class="fieldlinebreak"><br></div>
-
-            
-                    <div class="fieldlinebreak"><br></div>
-            
-                    <input type="hidden" name="waitlist" value="<?php echo $showwait; ?>">
-                    <input type="submit" onclick="return validate();" value="Save" id="btnSave" class="buttonleftmargin btn btn-primary">  
-                    <hr class="text-light">
-                    <br>
-                    <span class="text-light">
-                        <p>
-                        Age : 5 to 12<br>
-                        Time: Every Thursday 7 to 8 pm<br> 
-                        Location: Ojima 4-1-1-103 , Nishi Ojima Danchi (RAINDROPS)<br>
-                        Start Date:  11th Dec <br>
-                        <br>
-                        Chess board will be provided.<br>
-
-                        <br>
-                        <span class="chessinfo">
-                        Chess is more than just a game — it’s a fun workout for the mind! When children learn chess, they develop sharper memory, better concentration, and powerful problem-solving skills. Every move teaches patience, planning, and the confidence to make decisions.<br>
-                        Whether your child is a beginner or already curious, chess builds creativity and strategic thinking in a playful and exciting way. With each game, kids learn to think ahead, stay calm under pressure, and celebrate both winning and learning.
-                        </span>
-                    </span>
-                </form>        
-            </div>
-        </div>
-        
-    </body> 
-    
-    <script>
-    
-        function validate(){
-            let e1 = document.getElementById("email").value;
-            let e2 = document.getElementById("emailconfirm").value;
-            if(e1 !== e2){
-                alert("email not matching");
-                return false;
-            }
-
+    <style>
+        .hero {
+            background: url('https://images.unsplash.com/photo-1586165368502-1bad197a6461') center center/cover no-repeat;
+            height: 90vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
         }
-    
- </script>
-    
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            padding: 50px 20px;
+        }
+        .section-padding {
+            padding: 60px 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Raindrops Chess Club</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Programs</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Welcome to Our Chess Club</h1>
+            <p class="lead mt-3">Sharpen Your Mind. Build Strategy. Master the Game.</p>
+            <a href="joinclub.php" class="btn btn-warning btn-lg mt-4">Join Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="section-padding bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4">About Our Club</h2>
+        <p class="lead">
+            Our Chess Club is dedicated to nurturing strategic thinking and problem-solving skills. 
+            We welcome players of all ages and skill levels — from beginners to advanced competitors.
+        </p>
+    </div>
+</section>
+
+<!-- Programs Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="mb-5">Our Programs</h2>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Beginner Classes</h5>
+                        <p class="card-text">
+                            Learn the basics of chess, rules, and simple strategies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Intermediate Training</h5>
+                        <p class="card-text">
+                            Improve tactics, openings, and endgame techniques.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Tournaments</h5>
+                        <p class="card-text">
+                            Participate in competitive tournaments and championships.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">© 2026 Chess Club | All Rights Reserved</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>
